@@ -1,12 +1,11 @@
-import org.junit.*;
-import org.hamcrest.*;
+package ija.Port;
 
-public class Port {
+public abstract class Port {
 
     private String name;
-    private Double value;
+    protected double value;
 
-    public Port(String name, Double value) {
+    public Port(String name, double value) {
 
         this.name = name;
         this.value = value;
@@ -21,9 +20,7 @@ public class Port {
         return value;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
-    }
+    public abstract void setValue(double value);
 
     @Override
     public boolean equals(Object obj) {

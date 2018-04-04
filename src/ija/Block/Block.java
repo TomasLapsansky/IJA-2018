@@ -1,12 +1,14 @@
+package ija.Block;
+
+import ija.Port.*;
+
 import java.util.*;
-import org.junit.*;
-import org.hamcrest.*;
 
 abstract public class Block {
 
     private String name;
-    private ArrayList<Port> PortIN;
-    private ArrayList<Port> PortOUT;
+    protected ArrayList<Port> PortIN;
+    protected ArrayList<Port> PortOUT;
 
     public Block(String name) {
 
@@ -28,32 +30,34 @@ abstract public class Block {
 
     }
 
-    public void AddInput(String name, Double value) {
+    public void AddInput(String name, double value) {
 
-        Port input = new Port(name, value);
+        Port input = new IN_Port(name, value);
         PortIN.add(input);
 
     }
 
     public void RemoveInput(String name) {
 
-        Port remove = new Port(name, 0.0);
+        Port remove = new IN_Port(name, 0.0);
         PortIN.remove(remove);
 
     }
 
-    public void AddOutput(String name, Double value) {
+    public void AddOutput(String name, double value) {
 
-        Port output = new Port(name, value);
+        Port output = new OUT_Port(name, value);
         PortOUT.add(output);
 
     }
 
     public void RemoveOutput(String name) {
 
-        Port output = new Port(name, 0.0);
+        Port output = new OUT_Port(name, 0.0);
         PortOUT.remove(output);
 
     }
+
+    public abstract void result();
 
 }
