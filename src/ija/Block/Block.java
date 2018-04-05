@@ -44,16 +44,16 @@ abstract public class Block {
 
     }
 
-    public void AddOutput(String name, double value) {
+    public void AddOutput(String name) {
 
-        Port output = new OUT_Port(name, value);
+        Port output = new OUT_Port(name);
         PortOUT.add(output);
 
     }
 
     public void RemoveOutput(String name) {
 
-        Port output = new OUT_Port(name, 0.0);
+        Port output = new OUT_Port(name);
         PortOUT.remove(output);
 
     }
