@@ -4,9 +4,11 @@ public class OUT_Port extends Port {
 
     private Connection con;
 
-    public OUT_Port(String name, double value) {
-        super(name, value);
+    public OUT_Port(String name) {
+
+        super(name);
         con = null;
+
     }
 
     @Override
@@ -18,6 +20,8 @@ public class OUT_Port extends Port {
     }
 
     public void setConnection(Connection obj) {
+
         this.con = obj;
+
     }
 }

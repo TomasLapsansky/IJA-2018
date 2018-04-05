@@ -12,6 +12,13 @@ public abstract class Port {
 
     }
 
+    public Port(String name) {
+
+        this.name = name;
+        this.value = 0.0;
+
+    }
+
     public String getName() {
         return name;
     }

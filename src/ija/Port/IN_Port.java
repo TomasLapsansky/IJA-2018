@@ -6,6 +6,12 @@ public class IN_Port extends Port{
         super(name, value);
     }
 
+    public IN_Port(String name) {
+
+        super(name);
+
+    }
+
     @Override
     public void setValue(double value) {
 
