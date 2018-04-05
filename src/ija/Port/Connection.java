@@ -1,7 +1,5 @@
 package ija.Port;
 
-import ija.Port.*;
-
 public class Connection {
 
     private OUT_Port out_port;  //output predosleho bloku
@@ -17,6 +15,7 @@ public class Connection {
     }
 
     public void setEquation() {
+
         in_port.setValue(out_port.getValue());
     }
 
