@@ -67,8 +67,8 @@ public class UnitTest_xlapsa00 {
         Assert.assertNull("Remove Input A test", ADD.getInput("A"));
         Assert.assertNull("Remove Input B test", ADD.getInput("B"));
 
-        Assert.assertNull("Remove Output X test", ADD.getInput("X"));
-        Assert.assertNull("Remove Output Y test", ADD.getInput("Y"));
+        Assert.assertNull("Remove Output X test", ADD.getOutput("X"));
+        Assert.assertNull("Remove Output Y test", ADD.getOutput("Y"));
 
     }
 
