@@ -23,7 +23,7 @@ public abstract class Port {
         return name;
     }
 
-    public Double getValue() {
+    public double getValue() {
         return value;
     }
 

@@ -15,7 +15,9 @@ public class OUT_Port extends Port {
     public void setValue(double value) {
 
         this.value = value;
-        this.con.setEquation();
+
+        if(con != null)     //if connection exists
+            this.con.setEquation();
 
     }
 

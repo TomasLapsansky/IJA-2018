@@ -7,14 +7,14 @@ import java.util.*;
 abstract public class Block {
 
     private String name;
-    protected ArrayList<Port> PortIN;
-    protected ArrayList<Port> PortOUT;
+    protected ArrayList<IN_Port> PortIN;
+    protected ArrayList<OUT_Port> PortOUT;
 
     public Block(String name) {
 
         this.name = name;
-        PortIN = new ArrayList<Port>();
-        PortOUT = new ArrayList<Port>();
+        PortIN = new ArrayList<IN_Port>();
+        PortOUT = new ArrayList<OUT_Port>();
 
     }
 
@@ -32,7 +32,7 @@ abstract public class Block {
 
     public void AddInput(String name, double value) {
 
-        Port input = new IN_Port(name, value);
+        IN_Port input = new IN_Port(name, value);
         PortIN.add(input);
 
     }
@@ -46,7 +46,7 @@ abstract public class Block {
 
     public void AddOutput(String name) {
 
-        Port output = new OUT_Port(name);
+        OUT_Port output = new OUT_Port(name);
         PortOUT.add(output);
 
     }
@@ -55,6 +55,29 @@ abstract public class Block {
 
         Port output = new OUT_Port(name);
         PortOUT.remove(output);
+
+    }
+
+    //Podpora pre hlbsi rozvoj programu
+    public IN_Port getInput(String name) {
+
+        for (IN_Port input: PortIN) {
+            if(input.getName().equals(name))
+                return input;
+        }
+
+        return null;
+
+    }
+
+    public OUT_Port getOutput(String name) {
+
+        for (OUT_Port output: PortOUT) {
+            if(output.getName().equals(name))
+                return output;
+        }
+
+        return null;
 
     }
 
