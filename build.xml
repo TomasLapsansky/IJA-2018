@@ -3,6 +3,7 @@
     <description>Build pre zaklad blokoveho schema</description>
     
     <property name="lib.dir" location="./lib"/>
+    <property anem="main.compile.dir">
     <property name="main.build.dir" value="./build/main"/>
     <property name="main.src.dir" value="./src"/>
     <property name="test.build.dir" value="./build/test"/>
@@ -24,6 +25,10 @@
         <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
     </target>
     
+    <target name="run">
+        
+    </target>
+    
     <target name="test-compile" depends="compile">
         <mkdir dir="${test.build.dir}"/>
         <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
@@ -31,7 +36,7 @@
         </javac>
     </target>
     
-    <target name="run" depends="test-compile">
+    <target name="test" depends="test-compile">
         <junit printsummary="on" haltonfailure="yes" fork="true">
             <classpath>
                 <path refid="classpath.test"/>

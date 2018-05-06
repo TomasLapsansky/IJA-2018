@@ -40,13 +40,9 @@ public class handlers {
 
         Point point = selectors.point();
 
-    }
-
-    /*
-    public static void edit_block() {
+        // TODO
 
     }
-    */
 
     public static void edit_connection() {
 

@@ -32,7 +32,7 @@ public class add_connection {
                     if (!(Point.Points.get(key) != null && !(key.equals(Point.result.name))))       //
                         input.getItems().add(key);
                 } else {
-                    if (Point.Points.get(key) != null)       //
+                    if (Point.Points.get(key) == null)       //
                         input.getItems().add(key);
                 }
             }

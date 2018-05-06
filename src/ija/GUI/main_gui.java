@@ -3,6 +3,7 @@ package ija.GUI;
 import ija.Block.Block;
 import ija.Block.Point;
 import ija.Port.Connection;
+import ija.Run;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.*;
@@ -100,6 +101,11 @@ public class main_gui extends Application {
 
         exitFile.setOnAction(e -> handlers.file_exit());
 
+        newFile.setDisable(true);
+        openFile.setDisable(true);
+        saveFile.setDisable(true);
+        settingsFile.setDisable(true);
+
         // Edit menu
         Menu editMenu = new Menu("Edit");
         topMenu_menu.put("Edit", editMenu);
@@ -115,6 +121,8 @@ public class main_gui extends Application {
         // Handlers for EDIT
         editPoint.setOnAction(e -> handlers.edit_point());
         editConnection.setOnAction(e -> handlers.edit_connection());
+
+        editPoint.setDisable(true);
 
         // Add menu
         Menu addMenu = new Menu("Add");
@@ -172,6 +180,8 @@ public class main_gui extends Application {
         deleteBlock.setOnAction(e -> handlers.delete_block());
         deleteConnection.setOnAction(e -> handlers.delete_connection());
 
+        deletePoint.setDisable(true);
+
         // Run menu
         Menu runMenu = new Menu("Run");
         topMenu_menu.put("Run", runMenu);
@@ -185,6 +195,9 @@ public class main_gui extends Application {
         runMenu.getItems().add(runCycleDet);
 
         topMenu.getMenus().addAll(fileMenu, editMenu, addMenu, deleteMenu, runMenu);
+
+        runRun.setDisable(true);
+        runCycleDet.setDisable(true);
 
     }
 
