@@ -1,14 +1,12 @@
 package ija.Port;
 
+import ija.Block.*;
+
 public class IN_Port extends Port{
 
-    public IN_Port(String name, double value) {
-        super(name, value);
-    }
+    public IN_Port(String name, Block block) {
 
-    public IN_Port(String name) {
-
-        super(name);
+        super(name, block);
 
     }
 
@@ -17,5 +15,10 @@ public class IN_Port extends Port{
 
         this.value = value;
 
+    }
+
+    @Override
+    public void remove() {
+        block.RemoveInput(this.getName());
     }
 }

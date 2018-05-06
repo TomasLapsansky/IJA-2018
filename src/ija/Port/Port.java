@@ -1,33 +1,44 @@
 package ija.Port;
 
+import ija.Block.*;
+
 public abstract class Port {
 
+    protected Block block;
     private String name;
     protected double value;
+    protected Connection connection;
 
-    public Port(String name, double value) {
-
-        this.name = name;
-        this.value = value;
-
-    }
-
-    public Port(String name) {
+    public Port(String name, Block block) {
 
         this.name = name;
         this.value = 0.0;
+        this.block = block;
+        this.connection = null;
 
     }
 
-    public String getName() {
-        return name;
+    public Block getBlock() {
+        return block;
     }
+
+    public void setBlock(Block block) {
+        this.block = block;
+    }
+
+    public String getName() { return name; }
+
+    public Connection getConnection() { return connection; }
+
+    public void setConnection(Connection connection) { this.connection = connection; }
 
     public double getValue() {
         return value;
     }
 
     public abstract void setValue(double value);
+
+    public abstract void remove();
 
     @Override
     public boolean equals(Object obj) {

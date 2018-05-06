@@ -1,13 +1,12 @@
 package ija.Port;
 
+import ija.Block.*;
+
 public class OUT_Port extends Port {
 
-    private Connection con;
+    public OUT_Port(String name, Block block) {
 
-    public OUT_Port(String name) {
-
-        super(name);
-        con = null;
+        super(name, block);
 
     }
 
@@ -16,14 +15,13 @@ public class OUT_Port extends Port {
 
         this.value = value;
 
-        if(con != null)     //if connection exists
-            this.con.setEquation();
+        if(connection != null)     //if connection exists
+            this.connection.setEquation();
 
     }
 
-    public void setConnection(Connection obj) {
-
-        this.con = obj;
-
+    @Override
+    public void remove() {
+        block.RemoveOutput(this.getName());
     }
 }
