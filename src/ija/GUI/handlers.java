@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import ija.Block.*;
 import ija.Port.*;
+import ija.Run;
 
 public class handlers {
 
@@ -230,6 +231,21 @@ public class handlers {
 
         // GUI
         main_gui.removeBranch(name, "Connections");
+
+    }
+
+    public static void run_cycleDetection() {
+
+        if(!(Run.cycle_detection()))
+            Run.message("Check", "Cycle not detected");
+
+    }
+
+    public static void run_run() {
+
+        Run.run();
+
+        Run.message("Final", "Value is " + Point.result.value);
 
     }
 }

@@ -3,7 +3,7 @@
     <description>Build pre zaklad blokoveho schema</description>
     
     <property name="lib.dir" location="./lib"/>
-    <property anem="main.compile.dir">
+    <property name="main.compile.dir" value="./dest-client/"/>
     <property name="main.build.dir" value="./build/main"/>
     <property name="main.src.dir" value="./src"/>
     <property name="test.build.dir" value="./build/test"/>
@@ -23,10 +23,20 @@
     <target name="compile">
         <mkdir dir="${main.build.dir}"/>
         <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
+        <jar destfile="dest-client/ija-client.jar" basedir="${main.build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="ija.GUI.main_class"/>
+            </manifest>
+        </jar>
     </target>
     
     <target name="run">
-        
+        <mkdir dir="${main.compile.dir}"/>
+        <java classname="ija.GUI.main_gui" fork="true">
+                <classpath>
+                        <path location="dest-client/ija-client.jar"/>
+                </classpath>
+        </java>
     </target>
     
     <target name="test-compile" depends="compile">

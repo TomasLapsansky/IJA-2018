@@ -196,8 +196,10 @@ public class main_gui extends Application {
 
         topMenu.getMenus().addAll(fileMenu, editMenu, addMenu, deleteMenu, runMenu);
 
-        runRun.setDisable(true);
-        runCycleDet.setDisable(true);
+        runCycleDet.setOnAction(e -> handlers.run_cycleDetection());
+        runRun.setOnAction(e -> handlers.run_run());
+
+
 
     }
 
