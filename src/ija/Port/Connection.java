@@ -11,12 +11,6 @@ public class Connection {
 
     public static Map<String, Connection> Connections;
 
-    /*
-     * TODO
-     * sposob vymazavanie connections a ich uprava
-     * predbezny navrh: static pole so vsetkymi connections
-     */
-
     public Connection(String name, OUT_Port output, IN_Port input) {
 
         this.out_port = output;

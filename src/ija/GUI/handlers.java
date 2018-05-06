@@ -84,6 +84,26 @@ public class handlers {
 
     public static void add_point() {
 
+        String type = selectors.setPoint();
+
+        if(type.isEmpty())
+            return;
+
+        String ret[];
+        ret = add_point.display();
+
+        if(type.equals("Start")) {
+
+            Start_Point point = new Start_Point(ret[0], Integer.parseInt(ret[1]));
+
+        } else if(type.equals("End")) {
+
+            End_Point point = new End_Point(ret[0], Integer.parseInt(ret[1]));
+
+        }
+
+        main_gui.makeBranch(ret[0], main_gui.leftMenu_items.get("Points"));
+
     }
 
     public static void add_add() {

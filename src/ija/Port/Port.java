@@ -5,6 +5,7 @@ import ija.Block.*;
 public abstract class Port {
 
     protected Block block;
+    protected Point point;
     private String name;
     protected double value;
     protected Connection connection;

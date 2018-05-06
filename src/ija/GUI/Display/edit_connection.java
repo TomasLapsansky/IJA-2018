@@ -2,6 +2,7 @@ package ija.GUI.Display;
 
 import java.util.*;
 import ija.Block.Block;
+import ija.Block.Point;
 import ija.Port.Connection;
 import javafx.stage.*;
 import javafx.scene.*;
@@ -25,7 +26,13 @@ public class edit_connection {
 
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
-                input.getItems().add(key);
+                if(Point.result != null) {
+                    if (!(Point.Points.get(key) != null && !(key.equals(Point.result.name))))       //
+                        input.getItems().add(key);
+                } else {
+                    if (Point.Points.get(key) != null)       //
+                        input.getItems().add(key);
+                }
             }
         }
 
@@ -36,7 +43,12 @@ public class edit_connection {
 
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
-                output.getItems().add(key);
+                if(Point.result != null) {
+                    if (!(Point.result.name.equals(key)))
+                        output.getItems().add(key);
+                } else {
+                    output.getItems().add(key);
+                }
             }
         }
 

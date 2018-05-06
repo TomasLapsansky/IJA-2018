@@ -90,4 +90,40 @@ public class selectors {
 
     }
 
+    public static String setPoint() {
+
+        Stage window = new Stage();
+
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Select point type");
+
+        GridPane layout = new GridPane();
+
+        ChoiceBox<String> selector = new ChoiceBox<>();
+
+        selector.getItems().add("Start");
+        selector.getItems().add("End");
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> window.close());   //TODO
+
+        Button createButton = new Button("Select");
+        createButton.setOnAction(e -> window.close());
+
+        GridPane.setConstraints(selector, 0, 0);
+        GridPane.setConstraints(closeButton, 0, 1);
+        GridPane.setConstraints(createButton, 1, 1);
+
+        layout.getChildren().addAll(selector, closeButton, createButton);
+
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+
+        return selector.getValue();
+
+    }
+
 }

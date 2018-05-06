@@ -10,6 +10,12 @@ public class OUT_Port extends Port {
 
     }
 
+    public OUT_Port(String name) {
+
+        super(name, null);
+
+    }
+
     @Override
     public void setValue(double value) {
 

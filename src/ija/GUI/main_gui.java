@@ -34,7 +34,7 @@ public class main_gui extends Application {
 
         Block.Blocks = new HashMap<>();
         Connection.Connections = new HashMap<>();
-        Point.points = new HashMap<>();
+        Point.Points = new HashMap<>();
 
         init_main_gui();
 
