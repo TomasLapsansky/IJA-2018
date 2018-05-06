@@ -1,7 +1,9 @@
 package ija.GUI.Display;
 
 import ija.Block.Block;
+import ija.Block.Point;
 import ija.Port.Connection;
+import ija.Port.Port;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -64,7 +66,12 @@ public class selectors {
 
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
-                selector.getItems().add(key);
+                if(Point.Points.isEmpty())
+                    selector.getItems().add(key);
+                else {
+                    if (Point.Points.get(key) == null)
+                        selector.getItems().add(key);
+                }
             }
         }
 
@@ -123,6 +130,45 @@ public class selectors {
         window.showAndWait();
 
         return selector.getValue();
+
+    }
+
+    public static Point point() {
+
+        Stage window = new Stage();
+
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Select point");
+
+        GridPane layout = new GridPane();
+
+        ChoiceBox<String> selector = new ChoiceBox<>();
+
+        if (!(Point.Points.isEmpty())) {
+            for (String key : Point.Points.keySet()) {
+                selector.getItems().add(key);
+            }
+        }
+
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> window.close());   //TODO
+
+        Button createButton = new Button("Select");
+        createButton.setOnAction(e -> window.close());
+
+        GridPane.setConstraints(selector, 0, 0);
+        GridPane.setConstraints(closeButton, 0, 1);
+        GridPane.setConstraints(createButton, 1, 1);
+
+        layout.getChildren().addAll(selector, closeButton, createButton);
+
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+
+        return Point.Points.get(selector.getValue());
 
     }
 

@@ -38,6 +38,8 @@ public class handlers {
 
     public static void edit_point() {
 
+        Point point = selectors.point();
+
     }
 
     /*
