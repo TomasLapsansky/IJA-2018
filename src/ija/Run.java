@@ -2,7 +2,7 @@ package ija;
 
 import ija.Block.Block;
 import ija.Block.Point;
-import ija.Port.OUT_Port;
+import ija.Port.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,40 +17,38 @@ public class Run {
 
     public static void run() {
 
-        if(cycle_detection()) {
+        if(cycle_detection(false)) {
+
+            Run.message("Run: Cycle detection", "Cycle detected");
+
             return;
         }
 
-        LinkedList<Block> toCheck = new LinkedList<>();
+        // Set for every block
+        for (String key: Block.Blocks.keySet()) {
 
-        for (String key : Point.Points.keySet()) {
-            if(Point.Points.get(key) != Point.result) {
-                Point.Points.get(key).gate_block.getInput(key).setValue(Point.Points.get(key).value);
-                toCheck.push(Point.Points.get(key).gate_block);
+            for (String key_port: Block.Blocks.get(key).connections_set.keySet()) {
+
+                Block.Blocks.get(key).connections_set.put(key_port, false);
+
             }
+
         }
 
-        while(toCheck.size() != 0) {
+        for (String key: Point.Points.keySet()) {
 
-            Block block = toCheck.removeLast();    // Mozna optimalizacia
+            // Set for every connection block
+            Point.Points.get(key).gate_block.PortIN.get(0).setValue(Point.Points.get(key).value);
 
-            block.result();     // Result and tranfer to other blocks
+            if(Point.Points.get(key).gate_block != Point.result.gate_block)
+                Point.Points.get(key).gate_block.result();
 
-            for (OUT_Port act_output: block.PortOUT) {
-
-                if(act_output.getConnection() != null) {
-
-                    Block next_block = act_output.getConnection().getIn_port().getBlock();
-
-                    toCheck.push(next_block);
-                }
-            }
         }
 
-        //HERE
+        Point.result.value = Point.result.port.getValue();
     }
 
-    public static boolean cycle_detection() {
+    public static boolean cycle_detection(boolean detection) {
 
         if(Point.Points.isEmpty()) {
             message("No input", "No input points detected");
@@ -67,36 +65,46 @@ public class Run {
             return true;
         }
 
-        // Queue to check
-        LinkedList<Block> toCheck = new LinkedList<>();
-        Map<String, Block> checked = new HashMap<>();
+        boolean cycle = false;
 
         for (String key : Point.Points.keySet()) {
-            if(Point.Points.get(key) != Point.result) {
-                toCheck.push(Point.Points.get(key).gate_block);
+
+            if(check_block(Point.Points.get(key).gate_block, new ArrayList<String>())) {
+                cycle = true;
             }
+
         }
 
-        while(toCheck.size() != 0) {
-
-            Block block = toCheck.removeLast();    // Mozna optimalizacia
-
-            if(checked.get(block.getName()) != null) {
+        if(detection) {
+            if(cycle)
                 message("Cycle detection", "Cycle detected!");
-                return true;
-            }
+            else
+                message("Cycle detection", "Cycle undetected");
+        }
 
-            for (OUT_Port act_output: block.PortOUT) {
+        return cycle;
+    }
 
-                if(act_output.getConnection() != null) {
+    private static boolean check_block(Block block, ArrayList<String> array_of_blocks) {
 
-                    Block next_block = act_output.getConnection().getIn_port().getBlock();
+        if(block == null)       // Este overit TODO
+            return false;
 
-                    toCheck.push(next_block);
+        if(array_of_blocks.contains(block.getName())) {
+            return true;
+        }
+
+        array_of_blocks.add(block.getName());
+
+        for (Port port: block.PortOUT) {
+
+            if(port != null) {
+                if(port.getConnection() != null) {
+                    if(check_block(port.getConnection().getIn_port().getBlock(), array_of_blocks))
+                        return true;
                 }
             }
 
-            checked.put(block.getName(), block);
         }
 
         return false;

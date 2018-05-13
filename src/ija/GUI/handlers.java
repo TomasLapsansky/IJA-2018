@@ -5,9 +5,9 @@ import ija.Block.DIV_Block;
 import ija.Block.MUL_Block;
 import ija.Block.SUB_Block;
 import ija.GUI.Display.*;
+import ija.IO;
 import ija.Port.IN_Port;
 
-import java.util.ArrayList;
 import java.util.Stack;
 import java.util.UUID;
 
@@ -19,13 +19,19 @@ public class handlers {
 
     public static void file_new() {
 
+        IO.New();
+
     }
 
     public static void file_open() {
 
+        IO.load();
+
     }
 
     public static void file_save() {
+
+        IO.save();
 
     }
 
@@ -85,20 +91,25 @@ public class handlers {
 
         String type = selectors.setPoint();
 
-        if(type.isEmpty())
+        if(type == null || type.isEmpty())
             return;
 
         String ret[];
         ret = add_point.display();
 
+        if(ret[0] == null || ret[1] == null || ret[0].isEmpty() || ret[1].isEmpty())
+            return;
+
         if(type.equals("Start")) {
 
-            Start_Point point = new Start_Point(ret[0], Integer.parseInt(ret[1]));
+            Start_Point point = new Start_Point(ret[0], Double.parseDouble(ret[1]));
 
         } else if(type.equals("End")) {
 
-            End_Point point = new End_Point(ret[0], Integer.parseInt(ret[1]));
+            End_Point point = new End_Point(ret[0], Double.parseDouble(ret[1]));
 
+        } else {
+            return;
         }
 
         main_gui.makeBranch(ret[0], main_gui.leftMenu_items.get("Points"));
@@ -236,9 +247,7 @@ public class handlers {
 
     public static void run_cycleDetection() {
 
-        if(!(Run.cycle_detection()))
-            Run.message("Check", "Cycle not detected");
-
+        Run.cycle_detection(true);
     }
 
     public static void run_run() {
@@ -246,6 +255,62 @@ public class handlers {
         Run.run();
 
         Run.message("Final", "Value is " + Point.result.value);
+
+    }
+
+    public static void debug() {
+
+        System.out.println("GATE");
+
+        for (String key: Point.Points.keySet()) {
+
+            Block block = Point.Points.get(key).gate_block;
+
+            System.out.println(block.getName());
+
+            for (Port port: block.PortIN) {
+                System.out.println(port.getName());
+                System.out.println(port.getValue());
+            }
+
+            for (Port port: block.PortOUT) {
+                System.out.println(port.getName());
+                System.out.println(port.getValue());
+            }
+
+        }
+
+        System.out.println("BLOCKS");
+
+        for (String key: Block.Blocks.keySet()) {
+
+            Block block = Block.Blocks.get(key);
+
+            System.out.println(block.getName());
+
+            for (Port port: block.PortIN) {
+                System.out.println(port.getName());
+                System.out.println(port.getValue());
+            }
+
+            for (Port port: block.PortOUT) {
+                System.out.println(port.getName());
+                System.out.println(port.getValue());
+            }
+
+        }
+
+        System.out.println("CONNECTIONS");
+
+        for (String key: Connection.Connections.keySet()) {
+
+            Connection connection = Connection.Connections.get(key);
+
+            System.out.println(connection.getName());
+
+            System.out.println("INPORT");
+
+        }
 
     }
 }

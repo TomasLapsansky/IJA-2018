@@ -21,8 +21,9 @@ public class OUT_Port extends Port {
 
         this.value = value;
 
-        if(connection != null)     //if connection exists
+        if(connection != null) {     //if connection exists
             this.connection.setEquation();
+        }
 
     }
 

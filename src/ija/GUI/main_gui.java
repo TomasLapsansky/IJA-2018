@@ -99,11 +99,14 @@ public class main_gui extends Application {
         topMenu_items.put("File_exit", exitFile);
         fileMenu.getItems().add(exitFile);
 
+        newFile.setOnAction(e -> handlers.file_new());
+        saveFile.setOnAction(e -> handlers.file_save());
+        openFile.setOnAction(e -> handlers.file_open());
         exitFile.setOnAction(e -> handlers.file_exit());
 
-        newFile.setDisable(true);
-        openFile.setDisable(true);
-        saveFile.setDisable(true);
+        //newFile.setDisable(true);
+        //openFile.setDisable(true);
+        //saveFile.setDisable(true);
         settingsFile.setDisable(true);
 
         // Edit menu
@@ -194,12 +197,24 @@ public class main_gui extends Application {
         topMenu_items.put("Run_cycledet", runCycleDet);
         runMenu.getItems().add(runCycleDet);
 
-        topMenu.getMenus().addAll(fileMenu, editMenu, addMenu, deleteMenu, runMenu);
+        //topMenu.getMenus().addAll(fileMenu, editMenu, addMenu, deleteMenu, runMenu);
 
         runCycleDet.setOnAction(e -> handlers.run_cycleDetection());
         runRun.setOnAction(e -> handlers.run_run());
 
+        // Run menu
+        Menu debugMenu = new Menu("Debug");
+        topMenu_menu.put("Debug", debugMenu);
 
+        MenuItem debugDebug = new MenuItem("Debugging");
+        topMenu_items.put("Debug_debug", debugDebug);
+        debugMenu.getItems().add(debugDebug);
+
+        debugDebug.setOnAction(e -> handlers.debug());
+
+        debugMenu.setDisable(true);
+
+        topMenu.getMenus().addAll(fileMenu, editMenu, addMenu, deleteMenu, runMenu, debugMenu);
 
     }
 

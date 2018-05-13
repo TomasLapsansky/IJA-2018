@@ -11,6 +11,9 @@ abstract public class Block {
     public ArrayList<IN_Port> PortIN;
     public ArrayList<OUT_Port> PortOUT;
     public static Map<String, Block> Blocks;
+    public boolean gate;
+
+    public Map<String, Boolean> connections_set;
 
     public Block(String name) {
 
@@ -18,6 +21,8 @@ abstract public class Block {
 
         PortIN = new ArrayList<>();
         PortOUT = new ArrayList<>();
+        connections_set = new HashMap<>();
+        gate = false;
 
         Blocks.put(name, this);
 
@@ -39,6 +44,7 @@ abstract public class Block {
 
         IN_Port input = new IN_Port(name, this);
         PortIN.add(input);
+        connections_set.put(name, false);
 
         return input;
     }
@@ -58,6 +64,7 @@ abstract public class Block {
         Connection connection = in.getConnection();
 
         PortIN.remove(in);
+        connections_set.remove(in);
 
         if(connection != null) {
             // Nastavi connection pre opacny port na null
