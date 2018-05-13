@@ -104,9 +104,13 @@ public class handlers {
 
             Start_Point point = new Start_Point(ret[0], Double.parseDouble(ret[1]));
 
+            canvas.add_point(point);
+
         } else if(type.equals("End")) {
 
             End_Point point = new End_Point(ret[0], Double.parseDouble(ret[1]));
+
+            canvas.add_point(point);
 
         } else {
             return;
@@ -122,7 +126,9 @@ public class handlers {
             return;
         }
 
-        new ADD_Block(name);
+        Block block = new ADD_Block(name);
+
+        canvas.add_block(block);
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
@@ -133,7 +139,9 @@ public class handlers {
             return;
         }
 
-        new SUB_Block(name);
+        Block block = new SUB_Block(name);
+
+        canvas.add_block(block);
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
@@ -144,7 +152,9 @@ public class handlers {
             return;
         }
 
-        new MUL_Block(name);
+        Block block = new MUL_Block(name);
+
+        canvas.add_block(block);
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
@@ -155,7 +165,9 @@ public class handlers {
             return;
         }
 
-        new DIV_Block(name);
+        Block block = new DIV_Block(name);
+
+        canvas.add_block(block);
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
@@ -179,7 +191,9 @@ public class handlers {
         OUT_Port output = output_block.AddOutput(UUID.randomUUID().toString());
         IN_Port input = input_block.AddInput(UUID.randomUUID().toString());
 
-        new Connection(name, output, input);
+        Connection connection = new Connection(name, output, input);
+
+        canvas.add_connection(connection);
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Connections"));
 
@@ -217,6 +231,8 @@ public class handlers {
 
         Block.Blocks.remove(select.getName());
 
+        canvas.remove_block(select);
+
         main_gui.removeBranch(select.getName(), "Blocks");
 
     }
@@ -242,6 +258,7 @@ public class handlers {
 
         // GUI
         main_gui.removeBranch(name, "Connections");
+        canvas.remove_connection(select);
 
     }
 

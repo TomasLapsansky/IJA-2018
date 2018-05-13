@@ -1,6 +1,7 @@
 package ija;
 
 import ija.Block.*;
+import ija.GUI.Display.canvas;
 import ija.GUI.main_gui;
 import ija.Port.Connection;
 import ija.Port.IN_Port;
@@ -47,6 +48,8 @@ public class IO {
 
                     writer.println(point.name);
                     writer.println(point.value);
+                    writer.println(point.canvas.getLayoutX());
+                    writer.println(point.canvas.getLayoutY());
 
                 }
 
@@ -71,6 +74,8 @@ public class IO {
                         }
 
                         writer.println(block.getName());
+                        writer.println(block.canvas.getLayoutX());
+                        writer.println(block.canvas.getLayoutY());
                     }
                 }
 
@@ -141,15 +146,23 @@ public class IO {
 
                             name = br.readLine();
                             Double value = Double.parseDouble(br.readLine());
+                            double x = Double.parseDouble(br.readLine());
+                            double y = Double.parseDouble(br.readLine());
 
-                            new Start_Point(name, value);
+                            Point point = new Start_Point(name, value);
+
+                            canvas.add_point(point, x, y);
 
                         } else if (line.compareTo("End") == 0) {
 
                             name = br.readLine();
                             Double value = Double.parseDouble(br.readLine());
+                            double x = Double.parseDouble(br.readLine());
+                            double y = Double.parseDouble(br.readLine());
 
-                            new End_Point(name, value);
+                            Point point = new End_Point(name, value);
+
+                            canvas.add_point(point, x, y);
 
                         }
 
@@ -163,32 +176,46 @@ public class IO {
                         line = br.readLine();
 
                         String name = "";
+                        double x = 0.0;
+                        double y = 0.0;
+
+                        Block block = null;
 
                         if (line.compareTo("ADD") == 0) {
 
                             name = br.readLine();
+                            x = Double.parseDouble(br.readLine());
+                            y = Double.parseDouble(br.readLine());
 
-                            new ADD_Block(name);
+                            block = new ADD_Block(name);
 
                         } else if (line.compareTo("SUB") == 0) {
 
                             name = br.readLine();
+                            x = Double.parseDouble(br.readLine());
+                            y = Double.parseDouble(br.readLine());
 
-                            new SUB_Block(name);
+                            block = new SUB_Block(name);
 
                         } else if (line.compareTo("MUL") == 0) {
 
                             name = br.readLine();
+                            x = Double.parseDouble(br.readLine());
+                            y = Double.parseDouble(br.readLine());
 
-                            new MUL_Block(name);
+                            block = new MUL_Block(name);
 
                         } else if (line.compareTo("DIV") == 0) {
 
                             name = br.readLine();
+                            x = Double.parseDouble(br.readLine());
+                            y = Double.parseDouble(br.readLine());
 
-                            new DIV_Block(name);
+                            block = new DIV_Block(name);
 
                         }
+
+                        canvas.add_block(block, x, y);
 
                         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
 
@@ -206,7 +233,9 @@ public class IO {
                         OUT_Port output = output_block.AddOutput(UUID.randomUUID().toString());
                         IN_Port input = input_block.AddInput(UUID.randomUUID().toString());
 
-                        new Connection(name, output, input);
+                        Connection connection = new Connection(name, output, input);
+
+                        canvas.add_connection(connection);
 
                         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Connections"));
 
@@ -244,6 +273,8 @@ public class IO {
         Connection.Connections.clear();
 
         Point.result = null;
+
+        main_gui.canvas.getChildren().clear();
 
     }
 

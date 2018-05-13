@@ -3,7 +3,6 @@ package ija.GUI;
 import ija.Block.Block;
 import ija.Block.Point;
 import ija.Port.Connection;
-import ija.Run;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.*;
@@ -26,12 +25,16 @@ public class main_gui extends Application {
 
     public static Pane canvas;
 
+    public static Stage stage;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+
+        stage = primaryStage;
 
         Block.Blocks = new HashMap<>();
         Connection.Connections = new HashMap<>();
@@ -42,11 +45,6 @@ public class main_gui extends Application {
         init_top_menu();
 
         init_left_menu();
-
-        // CANVAS
-        /*
-            Shit
-         */
 
         layout.setTop(topMenu);
         layout.setLeft(leftMenu);

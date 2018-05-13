@@ -1,5 +1,7 @@
 package ija.Block;
 
+import javafx.scene.Group;
+
 import java.util.Map;
 
 public abstract class Point {
@@ -10,6 +12,8 @@ public abstract class Point {
     public double value;
 
     public Block gate_block;
+
+    public Group canvas;
 
     public Point(String name, double value) {
 

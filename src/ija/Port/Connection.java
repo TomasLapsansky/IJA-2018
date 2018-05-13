@@ -1,5 +1,7 @@
 package ija.Port;
 
+import javafx.scene.Group;
+
 import java.util.Map;
 
 public class Connection {
@@ -10,6 +12,7 @@ public class Connection {
     private IN_Port in_port;    //input do dalsieho bloku
 
     public boolean gate;
+    public Group canvas;
 
     public static Map<String, Connection> Connections;
 

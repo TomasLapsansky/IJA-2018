@@ -2,6 +2,7 @@ package ija.Block;
 
 import ija.GUI.main_gui;
 import ija.Port.*;
+import javafx.scene.Group;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ abstract public class Block {
     public ArrayList<OUT_Port> PortOUT;
     public static Map<String, Block> Blocks;
     public boolean gate;
+    public Group canvas;
 
     public Map<String, Boolean> connections_set;
 
@@ -23,6 +25,7 @@ abstract public class Block {
         PortOUT = new ArrayList<>();
         connections_set = new HashMap<>();
         gate = false;
+        canvas = null;
 
         Blocks.put(name, this);
 
@@ -73,6 +76,9 @@ abstract public class Block {
 
             Connection.Connections.remove(connection.getName());
             System.out.println(connection.getName());
+
+            main_gui.canvas.getChildren().remove(connection.canvas);
+
             main_gui.removeBranch(connection.getName(), "Connections");
         }
 
@@ -108,6 +114,9 @@ abstract public class Block {
             connection.getIn_port().remove();
 
             Connection.Connections.remove(connection.getName());
+
+            main_gui.canvas.getChildren().remove(connection.canvas);
+
             main_gui.removeBranch(connection.getName(), "Connections");
         }
 
