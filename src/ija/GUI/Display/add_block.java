@@ -8,9 +8,13 @@ import javafx.geometry.*;
 
 public class add_block {
 
+    private static boolean close;
+
     public static String display() {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Add block");
@@ -21,7 +25,10 @@ public class add_block {
         TextField name = new TextField();
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Create");
         createButton.setOnAction(e -> window.close());
@@ -39,8 +46,11 @@ public class add_block {
         window.setScene(scene);
         window.showAndWait();
 
-        return name.getText();
-
+        if(close) {
+            return null;
+        } else {
+            return name.getText();
+        }
     }
 
 }

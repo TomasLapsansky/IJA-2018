@@ -1,6 +1,7 @@
 package ija.Port;
 
 import ija.Block.*;
+import javafx.scene.control.Tooltip;
 
 public class OUT_Port extends Port {
 
@@ -21,8 +22,11 @@ public class OUT_Port extends Port {
 
         this.value = value;
 
-        if(connection != null) {     //if connection exists
+        if(connection != null) {     // If connection exists
             this.connection.setEquation();
+
+            // Actualize
+            Tooltip.install(connection.canvas, new Tooltip(String.valueOf(this.getValue())));
         }
 
     }

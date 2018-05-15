@@ -1,13 +1,12 @@
 package ija.GUI.Display;
 
 import ija.Block.*;
+import ija.GUI.handlers;
 import ija.GUI.main_gui;
 import ija.Port.Connection;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
@@ -42,19 +41,26 @@ public class canvas {
 
         stackPane.getChildren().addAll(rectangle, label);
 
-        main_gui.canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                block.canvas.setLayoutX(event.getX()-30);
-                block.canvas.setLayoutY(event.getY()-30);
+        main_gui.topMenu.setDisable(true);
+        main_gui.leftMenu.setDisable(true);
+        main_gui.canvas.setStyle("-fx-background-color: #eeffff;");
 
-                block.canvas.getChildren().add(stackPane);
+        main_gui.canvas.setOnMouseClicked(e -> {
+            block.canvas.setLayoutX(e.getX()-30);
+            block.canvas.setLayoutY(e.getY()-30);
 
-                main_gui.canvas.getChildren().add(block.canvas);
+            block.canvas.getChildren().add(stackPane);
 
-                main_gui.canvas.setOnMouseClicked(null);
-            }
+            main_gui.canvas.getChildren().add(block.canvas);
+
+            main_gui.topMenu.setDisable(false);
+            main_gui.leftMenu.setDisable(false);
+            main_gui.canvas.setStyle("-fx-background-color: transparent");
+
+            main_gui.canvas.setOnMouseClicked(null);
         });
+
+        block.canvas.setOnMouseDragged(e -> handlers.blockDrag(block, e));
 
     }
 
@@ -89,6 +95,8 @@ public class canvas {
 
         main_gui.canvas.getChildren().add(block.canvas);
 
+        block.canvas.setOnMouseDragged(e -> handlers.blockDrag(block, e));
+
     }
 
     public static void add_point(Point point) {
@@ -104,24 +112,39 @@ public class canvas {
         else if(point instanceof End_Point)
             circle.setFill(Color.RED);
 
-        Label label = new Label(point.name);
+        Label label = new Label(point.getName());
         label.setTextFill(Color.WHITE);
 
         stackPane.getChildren().addAll(circle, label);
 
-        main_gui.canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                point.canvas.setLayoutX(event.getX()-40);
-                point.canvas.setLayoutY(event.getY()-40);
+        main_gui.topMenu.setDisable(true);
+        main_gui.leftMenu.setDisable(true);
+        main_gui.canvas.setStyle("-fx-background-color: #eeffff;");
 
-                point.canvas.getChildren().add(stackPane);
+        main_gui.canvas.setOnMouseClicked(e -> {
+            point.canvas.setLayoutX(e.getX()-40);
+            point.canvas.setLayoutY(e.getY()-40);
 
-                main_gui.canvas.getChildren().add(point.canvas);
+            point.canvas.getChildren().add(stackPane);
 
-                main_gui.canvas.setOnMouseClicked(null);
+            main_gui.canvas.getChildren().add(point.canvas);
+
+            main_gui.topMenu.setDisable(false);
+            main_gui.leftMenu.setDisable(false);
+            main_gui.canvas.setStyle("-fx-background-color: transparent");
+
+            main_gui.canvas.setOnMouseClicked(null);
+        });
+
+        Tooltip.install(point.canvas, new Tooltip(String.valueOf(point.getValue())));
+
+        point.canvas.setOnMouseClicked(e -> {
+            if(e.getClickCount() == 2) {
+                handlers.edit_point(false, point);
             }
         });
+
+        point.canvas.setOnMouseDragged(e -> handlers.pointDrag(point, e));
 
     }
 
@@ -138,7 +161,7 @@ public class canvas {
         else if(point instanceof End_Point)
             circle.setFill(Color.RED);
 
-        Label label = new Label(point.name);
+        Label label = new Label(point.getName());
         label.setTextFill(Color.WHITE);
 
         stackPane.getChildren().addAll(circle, label);
@@ -149,6 +172,16 @@ public class canvas {
         point.canvas.getChildren().add(stackPane);
 
         main_gui.canvas.getChildren().add(point.canvas);
+
+        Tooltip.install(point.canvas, new Tooltip(String.valueOf(point.getValue())));
+
+        point.canvas.setOnMouseClicked(e -> {
+            if(e.getClickCount() == 2) {
+                handlers.edit_point(false, point);
+            }
+        });
+
+        point.canvas.setOnMouseDragged(e -> handlers.pointDrag(point, e));
 
     }
 
@@ -213,7 +246,13 @@ public class canvas {
 
         connection.canvas.getChildren().add(stackPane);
 
-        Tooltip.install(line, new Tooltip(connection.getName()));   // GOD
+        Tooltip.install(line, new Tooltip(connection.getName() + " " + connection.getIn_port().getValue()));
+
+        line.setOnMouseClicked(e -> {
+            if(e.getClickCount() == 2) {
+                handlers.edit_connection(false, connection);
+            }
+        });
 
         main_gui.canvas.getChildren().add(connection.canvas);
         connection.canvas.toBack();

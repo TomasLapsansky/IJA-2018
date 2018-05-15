@@ -1,6 +1,5 @@
 package ija.GUI.Display;
 
-import java.util.*;
 import ija.Block.Block;
 import ija.Block.Point;
 import ija.Port.Connection;
@@ -12,9 +11,13 @@ import javafx.geometry.*;
 
 public class edit_connection {
 
+    private static boolean close;
+
     public static String[] display(Connection connection) {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Edit connection " + connection.getName());
@@ -27,10 +30,10 @@ public class edit_connection {
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
                 if(Point.result != null) {
-                    if (!(Point.Points.get(key) != null && !(key.equals(Point.result.name))))       //
+                    if (!(Point.Points.get(key) != null && !(key.equals(Point.result.getName()))))
                         input.getItems().add(key);
                 } else {
-                    if (Point.Points.get(key) == null)       //
+                    if (Point.Points.get(key) == null)
                         input.getItems().add(key);
                 }
             }
@@ -44,7 +47,7 @@ public class edit_connection {
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
                 if(Point.result != null) {
-                    if (!(Point.result.name.equals(key)))
+                    if (!(Point.result.getName().equals(key)))
                         output.getItems().add(key);
                 } else {
                     output.getItems().add(key);
@@ -55,7 +58,10 @@ public class edit_connection {
         output.setValue(connection.getOut_port().getBlock().getName());
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Create");
         createButton.setOnAction(e -> window.close());
@@ -76,9 +82,16 @@ public class edit_connection {
         window.showAndWait();
 
         String ret[] = new String[3];
-        ret[0] = connection.getName();
-        ret[1] = input.getValue();
-        ret[2] = output.getValue();
+
+        if(close) {
+            ret[0] = null;
+            ret[1] = null;
+            ret[2] = null;
+        } else {
+            ret[0] = connection.getName();
+            ret[1] = input.getValue();
+            ret[2] = output.getValue();
+        }
 
         return ret;
     }

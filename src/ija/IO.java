@@ -46,8 +46,8 @@ public class IO {
                         writer.println("End");
                     }
 
-                    writer.println(point.name);
-                    writer.println(point.value);
+                    writer.println(point.getName());
+                    writer.println(point.getValue());
                     writer.println(point.canvas.getLayoutX());
                     writer.println(point.canvas.getLayoutY());
 
@@ -104,6 +104,8 @@ public class IO {
             } catch (IOException ex) {
                 Run.message("Warning", "File to save not found");
             }
+
+            main_gui.stage.setTitle(file.getName());
         }
 
     }
@@ -250,6 +252,7 @@ public class IO {
                 Run.message("Warning", "File to load not found");
             }
 
+            main_gui.stage.setTitle(file.getName());
         }
 
     }
@@ -275,6 +278,8 @@ public class IO {
         Point.result = null;
 
         main_gui.canvas.getChildren().clear();
+
+        main_gui.stage.setTitle("Blokove schema");
 
     }
 

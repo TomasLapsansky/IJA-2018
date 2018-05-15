@@ -4,6 +4,7 @@ import ija.Block.Block;
 import ija.Block.Point;
 import ija.Port.Connection;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class main_gui extends Application {
 
     public static BorderPane layout;
+    public static Pane canvas;
 
     public static MenuBar topMenu;
     public static TreeView<String> leftMenu;
@@ -22,8 +24,6 @@ public class main_gui extends Application {
     public static Map<String, Menu> topMenu_menu;
     public static Map<String, MenuItem> topMenu_items;
     public static Map<String, TreeItem<String>> leftMenu_items;
-
-    public static Pane canvas;
 
     public static Stage stage;
 
@@ -98,13 +98,11 @@ public class main_gui extends Application {
         fileMenu.getItems().add(exitFile);
 
         newFile.setOnAction(e -> handlers.file_new());
-        saveFile.setOnAction(e -> handlers.file_save());
         openFile.setOnAction(e -> handlers.file_open());
+        saveFile.setOnAction(e -> handlers.file_save());
+        settingsFile.setOnAction(e -> handlers.file_settings());
         exitFile.setOnAction(e -> handlers.file_exit());
 
-        //newFile.setDisable(true);
-        //openFile.setDisable(true);
-        //saveFile.setDisable(true);
         settingsFile.setDisable(true);
 
         // Edit menu
@@ -120,10 +118,8 @@ public class main_gui extends Application {
         editMenu.getItems().add(editConnection);
 
         // Handlers for EDIT
-        editPoint.setOnAction(e -> handlers.edit_point());
-        editConnection.setOnAction(e -> handlers.edit_connection());
-
-        editPoint.setDisable(true);
+        editPoint.setOnAction(e -> handlers.edit_point(true, null));
+        editConnection.setOnAction(e -> handlers.edit_connection(true, null));
 
         // Add menu
         Menu addMenu = new Menu("Add");
@@ -133,21 +129,24 @@ public class main_gui extends Application {
         topMenu_items.put("Add_point", addPoint);
         addMenu.getItems().add(addPoint);
 
-        MenuItem addAdd = new MenuItem("ADD Block");
+        Menu addBlock = new Menu("Block");
+        addMenu.getItems().add(addBlock);
+
+        MenuItem addAdd = new MenuItem("ADD");
         topMenu_items.put("Add_add", addAdd);
-        addMenu.getItems().add(addAdd);
+        addBlock.getItems().add(addAdd);
 
-        MenuItem addSub = new MenuItem("SUB Block");
+        MenuItem addSub = new MenuItem("SUB");
         topMenu_items.put("Add_sub", addSub);
-        addMenu.getItems().add(addSub);
+        addBlock.getItems().add(addSub);
 
-        MenuItem addMul = new MenuItem("MUL Block");
+        MenuItem addMul = new MenuItem("MUL");
         topMenu_items.put("Add_mul", addMul);
-        addMenu.getItems().add(addMul);
+        addBlock.getItems().add(addMul);
 
-        MenuItem addDiv = new MenuItem("DIV Block");
+        MenuItem addDiv = new MenuItem("DIV");
         topMenu_items.put("Add_div", addDiv);
-        addMenu.getItems().add(addDiv);
+        addBlock.getItems().add(addDiv);
 
         MenuItem addConnection = new MenuItem("Connection");
         topMenu_items.put("Add_connection", addConnection);
@@ -181,7 +180,7 @@ public class main_gui extends Application {
         deleteBlock.setOnAction(e -> handlers.delete_block());
         deleteConnection.setOnAction(e -> handlers.delete_connection());
 
-        deletePoint.setDisable(true);
+        //deletePoint.setDisable(true);
 
         // Run menu
         Menu runMenu = new Menu("Run");
@@ -223,6 +222,23 @@ public class main_gui extends Application {
 
         leftMenu = new TreeView<>(root);
         leftMenu.setShowRoot(false);
+
+        leftMenu.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                if(event.getClickCount() == 2)
+                {
+                    TreeItem<String> item = leftMenu.getSelectionModel().getSelectedItem();
+
+                    if(item.getParent().getValue().equals("Connections")) {
+                        handlers.edit_connection(false, Connection.Connections.get(item.getValue()));
+                    } else if(item.getParent().getValue().equals("Points")) {
+                        handlers.edit_point(false, Point.Points.get(item.getValue()));
+                    }
+
+                }
+            }
+        });
 
         leftMenu_items.put("Points", makeBranch("Points", root));
         leftMenu_items.put("Blocks", makeBranch("Blocks", root));

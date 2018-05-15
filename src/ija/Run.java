@@ -38,14 +38,14 @@ public class Run {
         for (String key: Point.Points.keySet()) {
 
             // Set for every connection block
-            Point.Points.get(key).gate_block.PortIN.get(0).setValue(Point.Points.get(key).value);
+            Point.Points.get(key).gate_block.PortIN.get(0).setValue(Point.Points.get(key).getValue());
 
             if(Point.Points.get(key).gate_block != Point.result.gate_block)
                 Point.Points.get(key).gate_block.result();
 
         }
 
-        Point.result.value = Point.result.port.getValue();
+        Point.result.setValue(Point.result.port.getValue());
     }
 
     public static boolean cycle_detection(boolean detection) {
@@ -69,7 +69,7 @@ public class Run {
 
         for (String key : Point.Points.keySet()) {
 
-            if(check_block(Point.Points.get(key).gate_block, new ArrayList<String>())) {
+            if(check_block(Point.Points.get(key).gate_block, new ArrayList<>())) {
                 cycle = true;
             }
 
@@ -87,7 +87,7 @@ public class Run {
 
     private static boolean check_block(Block block, ArrayList<String> array_of_blocks) {
 
-        if(block == null)       // Este overit TODO
+        if(block == null)
             return false;
 
         if(array_of_blocks.contains(block.getName())) {
@@ -100,7 +100,7 @@ public class Run {
 
             if(port != null) {
                 if(port.getConnection() != null) {
-                    if(check_block(port.getConnection().getIn_port().getBlock(), array_of_blocks))
+                    if(check_block(port.getConnection().getIn_port().getBlock(), new ArrayList<>(array_of_blocks)))
                         return true;
                 }
             }

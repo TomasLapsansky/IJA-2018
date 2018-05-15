@@ -3,7 +3,6 @@ package ija.GUI.Display;
 import ija.Block.Block;
 import ija.Block.Point;
 import ija.Port.Connection;
-import ija.Port.Port;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,9 +13,13 @@ import javafx.stage.Stage;
 
 public class selectors {
 
+    private static boolean close;
+
     public static Connection connection() {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Select connection");
@@ -26,13 +29,20 @@ public class selectors {
         ChoiceBox<String> selector = new ChoiceBox<>();
 
         if (!(Block.Blocks.isEmpty())) {
-            for (String key : Connection.Connections.keySet()) {
-                selector.getItems().add(key);
+            if(!(Connection.Connections.isEmpty())) {
+                for (String key : Connection.Connections.keySet()) {
+                    if(!(Connection.Connections.get(key).gate)) {
+                        selector.getItems().add(key);
+                    }
+                }
             }
         }
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Select");
         createButton.setOnAction(e -> window.close());
@@ -49,13 +59,19 @@ public class selectors {
         window.setScene(scene);
         window.showAndWait();
 
-        return Connection.Connections.get(selector.getValue());
+        if(close) {
+            return null;
+        } else {
+            return Connection.Connections.get(selector.getValue());
+        }
 
     }
 
     public static Block block() {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Select block");
@@ -66,17 +82,17 @@ public class selectors {
 
         if (!(Block.Blocks.isEmpty())) {
             for (String key : Block.Blocks.keySet()) {
-                if(Point.Points.isEmpty())
+                if(!(Block.Blocks.get(key).gate)){
                     selector.getItems().add(key);
-                else {
-                    if (Point.Points.get(key) == null)
-                        selector.getItems().add(key);
                 }
             }
         }
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Select");
         createButton.setOnAction(e -> window.close());
@@ -93,13 +109,18 @@ public class selectors {
         window.setScene(scene);
         window.showAndWait();
 
-        return Block.Blocks.get(selector.getValue());
-
+        if(close) {
+            return null;
+        } else {
+            return Block.Blocks.get(selector.getValue());
+        }
     }
 
     public static String setPoint() {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Select point type");
@@ -112,7 +133,10 @@ public class selectors {
         selector.getItems().add("End");
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Select");
         createButton.setOnAction(e -> window.close());
@@ -129,13 +153,18 @@ public class selectors {
         window.setScene(scene);
         window.showAndWait();
 
-        return selector.getValue();
-
+        if(close) {
+            return null;
+        } else {
+            return selector.getValue();
+        }
     }
 
-    public static Point point() {
+    public static Point point(boolean endPoint) {
 
         Stage window = new Stage();
+
+        close = false;
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Select point");
@@ -150,8 +179,17 @@ public class selectors {
             }
         }
 
+        if(Point.result != null) {
+            if (!endPoint) {
+                selector.getItems().remove(Point.result.getName());
+            }
+        }
+
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> window.close());   //TODO
+        closeButton.setOnAction(e -> {
+            close = true;
+            window.close();
+        });
 
         Button createButton = new Button("Select");
         createButton.setOnAction(e -> window.close());
@@ -168,8 +206,11 @@ public class selectors {
         window.setScene(scene);
         window.showAndWait();
 
-        return Point.Points.get(selector.getValue());
-
+        if(close){
+            return null;
+        } else {
+            return Point.Points.get(selector.getValue());
+        }
     }
 
 }

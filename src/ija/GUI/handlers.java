@@ -14,6 +14,11 @@ import java.util.UUID;
 import ija.Block.*;
 import ija.Port.*;
 import ija.Run;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseEvent;
 
 public class handlers {
 
@@ -43,19 +48,34 @@ public class handlers {
         System.exit(0);
     }
 
-    public static void edit_point() {
+    public static void edit_point(boolean selector, Point point) {
 
-        Point point = selectors.point();
+        if(selector)
+            point = selectors.point(false);
 
-        // TODO
+        if(point == null) {
+            return;
+        }
 
+        String ret = edit_point.display(point);
+
+        if(ret == null || ret.isEmpty()) {
+            return;
+        }
+
+        point.setValue(Double.parseDouble(ret));
     }
 
-    public static void edit_connection() {
+    public static void edit_connection(boolean selector, Connection connection) {
 
         // Connection values name are random
 
-        Connection connection = selectors.connection();
+        if(selector)
+            connection = selectors.connection();
+
+        if(connection == null) {
+            return;
+        }
 
         Block original_input_block = connection.getIn_port().getBlock();
         Block original_output_block = connection.getOut_port().getBlock();
@@ -91,24 +111,37 @@ public class handlers {
 
         String type = selectors.setPoint();
 
-        if(type == null || type.isEmpty())
+        if(type == null || type.isEmpty()) {
             return;
+        }
+
+        if(type.equals("End") && Point.result != null) {
+            Run.message("Warning", "You have to remove End Point to add another");
+            return;
+        }
 
         String ret[];
         ret = add_point.display();
 
-        if(ret[0] == null || ret[1] == null || ret[0].isEmpty() || ret[1].isEmpty())
+        if(ret[0] == null || ret[1] == null || ret[0].isEmpty() || ret[1].isEmpty()) {
+            return;
+        }
+
+        String name = ret[0];
+        double value = Double.parseDouble(ret[1]);
+
+        if(nameCheck(name))
             return;
 
         if(type.equals("Start")) {
 
-            Start_Point point = new Start_Point(ret[0], Double.parseDouble(ret[1]));
+            Start_Point point = new Start_Point(name, value);
 
             canvas.add_point(point);
 
         } else if(type.equals("End")) {
 
-            End_Point point = new End_Point(ret[0], Double.parseDouble(ret[1]));
+            End_Point point = new End_Point(name, value);
 
             canvas.add_point(point);
 
@@ -116,15 +149,18 @@ public class handlers {
             return;
         }
 
-        main_gui.makeBranch(ret[0], main_gui.leftMenu_items.get("Points"));
+        TreeItem item = main_gui.makeBranch(ret[0], main_gui.leftMenu_items.get("Points"));
 
     }
 
     public static void add_add() {
         String name = add_block.display();
-        if (name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return;
         }
+
+        if(nameCheck(name))
+            return;
 
         Block block = new ADD_Block(name);
 
@@ -135,9 +171,12 @@ public class handlers {
 
     public static void add_sub() {
         String name = add_block.display();
-        if (name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return;
         }
+
+        if(nameCheck(name))
+            return;
 
         Block block = new SUB_Block(name);
 
@@ -148,9 +187,12 @@ public class handlers {
 
     public static void add_mul() {
         String name = add_block.display();
-        if (name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return;
         }
+
+        if(nameCheck(name))
+            return;
 
         Block block = new MUL_Block(name);
 
@@ -164,6 +206,9 @@ public class handlers {
         if (name == null || name.isEmpty()) {
             return;
         }
+
+        if(nameCheck(name))
+            return;
 
         Block block = new DIV_Block(name);
 
@@ -185,6 +230,9 @@ public class handlers {
 
         String name = ret[0];
 
+        if(nameCheck(name))
+            return;
+
         Block input_block = Block.Blocks.get(ret[1]);
         Block output_block = Block.Blocks.get(ret[2]);
 
@@ -197,15 +245,51 @@ public class handlers {
 
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Connections"));
 
+
     }
 
     public static void delete_point() {
+
+        Point select = selectors.point(true);
+        if(select == null) {
+            return;
+        }
+
+        Block block = select.gate_block;
+        Connection connection = block.PortIN.get(0).getConnection();
+
+        Point.Points.remove(select.getName());
+        Connection.Connections.remove(connection.getName());
+        Block.Blocks.remove(block.getName());
+
+        Stack<OUT_Port> OUT = new Stack<>();
+
+        if(!(block.PortIN.isEmpty())) {
+            for (OUT_Port port : block.PortOUT) {
+                OUT.push(port);
+            }
+        }
+
+        while(!(OUT.empty())) {
+            OUT.pop().remove();
+        }
+
+        if(Point.result == select) {
+            Point.result = null;
+        }
+
+        canvas.remove_point(select);
+
+        main_gui.removeBranch(select.getName(), "Points");
 
     }
 
     public static void delete_block() {
 
         Block select = selectors.block();
+        if(select == null) {
+            return;
+        }
 
         // Using stack because of ConcurrentModificationException
 
@@ -241,6 +325,10 @@ public class handlers {
 
         Connection select = selectors.connection();
 
+        if(select == null) {
+            return;
+        }
+
         String name = select.getName();
 
         // Musi nastavit connections v blokoch na null
@@ -271,8 +359,110 @@ public class handlers {
 
         Run.run();
 
-        Run.message("Final", "Value is " + Point.result.value);
+        Run.message("Final", "Value is " + Point.result.getValue());
 
+    }
+
+    private static boolean nameCheck(String name) {
+
+        for (String key: Block.Blocks.keySet()) {
+            if(key.equals(name)){
+                Run.message("Warning", "Object with the same name already exists");
+                return true;
+            }
+        }
+
+        for (String key: Connection.Connections.keySet()) {
+            if(key.equals(name)){
+                Run.message("Warning", "Object with the same name already exists");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void blockDrag(Block block, MouseEvent event) {
+
+        double x,y;
+        double paneX, paneY;
+
+        paneX = main_gui.canvas.getWidth();
+        paneY = main_gui.canvas.getHeight();
+
+        x = event.getX() + block.canvas.getLayoutX() - 30;
+        y = event.getY() + block.canvas.getLayoutY() - 30;
+
+        if (x >= 0.0 && x + 60 <= paneX)
+            block.canvas.setLayoutX(x);
+        else if(x < 0.0)
+            block.canvas.setLayoutX(0);
+        else
+            block.canvas.setLayoutX(paneX - 60);
+
+        if (y >= 0.0 && y + 60 <= paneY)
+            block.canvas.setLayoutY(y);
+        else if(y < 0.0)
+            block.canvas.setLayoutY(0);
+        else
+            block.canvas.setLayoutY(paneY - 60);
+
+
+        for (Port port : block.PortIN) {
+
+            canvas.remove_connection(port.getConnection());
+            canvas.add_connection(port.getConnection());
+        }
+
+        for (Port port : block.PortOUT) {
+
+            canvas.remove_connection(port.getConnection());
+            canvas.add_connection(port.getConnection());
+        }
+    }
+
+    public static void pointDrag(Point point, MouseEvent event) {
+
+        double x,y;
+        double paneX, paneY;
+
+        paneX = main_gui.canvas.getWidth();
+        paneY = main_gui.canvas.getHeight();
+
+        x = event.getX() + point.canvas.getLayoutX() - 40;
+        y = event.getY() + point.canvas.getLayoutY() - 40;
+
+        if (x >= 0.0 && x + 80 <= paneX)
+            point.canvas.setLayoutX(x);
+        else if(x < 0.0)
+            point.canvas.setLayoutX(0);
+        else
+            point.canvas.setLayoutX(paneX - 80);
+
+        if (y >= 0.0 && y + 80 <= paneY)
+            point.canvas.setLayoutY(y);
+        else if(y < 0.0)
+            point.canvas.setLayoutY(0);
+        else
+            point.canvas.setLayoutY(paneY - 80);
+
+
+        if(point instanceof End_Point) {
+
+            for (Port port : point.gate_block.PortIN) {
+
+                canvas.remove_connection(port.getConnection());
+                canvas.add_connection(port.getConnection());
+            }
+
+        } else if(point instanceof Start_Point) {
+
+            for (Port port : point.gate_block.PortOUT) {
+
+                canvas.remove_connection(port.getConnection());
+                canvas.add_connection(port.getConnection());
+            }
+        }
     }
 
     public static void debug() {
