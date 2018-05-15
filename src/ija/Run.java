@@ -13,8 +13,16 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+/**
+ * Class which runs created schema and debug it
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class Run {
 
+    /**
+     * Go through created schema from Start Points, through Blocks to End Point
+     */
     public static void run() {
 
         if(cycle_detection(false)) {
@@ -48,6 +56,11 @@ public class Run {
         Point.result.setValue(Point.result.port.getValue());
     }
 
+    /**
+     * Cycle detection in created schema
+     * @param detection Determinate if warning message will be shown
+     * @return Cycle Detected / Cycle Undetected
+     */
     public static boolean cycle_detection(boolean detection) {
 
         if(Point.Points.isEmpty()) {
@@ -85,6 +98,12 @@ public class Run {
         return cycle;
     }
 
+    /**
+     * Recursive scanning of project structure
+     * @param block Actual Block
+     * @param array_of_blocks ArrayList of previous blocks
+     * @return Cycle Detected / Cycle Undetected
+     */
     private static boolean check_block(Block block, ArrayList<String> array_of_blocks) {
 
         if(block == null)
@@ -110,6 +129,11 @@ public class Run {
         return false;
     }
 
+    /**
+     * Alert message to be shown
+     * @param title Title of message
+     * @param message Message
+     */
     public static void message(String title, String message) {
 
         Stage window = new Stage();

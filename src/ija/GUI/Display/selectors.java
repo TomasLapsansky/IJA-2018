@@ -11,10 +11,19 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class for displaying popup selector alert windows
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class selectors {
 
     private static boolean close;
 
+    /**
+     * Selecting from connections
+     * @return Reference of Connection
+     */
     public static Connection connection() {
 
         Stage window = new Stage();
@@ -67,6 +76,10 @@ public class selectors {
 
     }
 
+    /**
+     * Selecting from blocks
+     * @return Reference of Blocks
+     */
     public static Block block() {
 
         Stage window = new Stage();
@@ -116,6 +129,10 @@ public class selectors {
         }
     }
 
+    /**
+     * Determinate the type of point in alert window
+     * @return String with type of point
+     */
     public static String setPoint() {
 
         Stage window = new Stage();
@@ -160,6 +177,11 @@ public class selectors {
         }
     }
 
+    /**
+     * Selecting from points
+     * @param endPoint Determinate if display End point or not
+     * @return Reference of Point
+     */
     public static Point point(boolean endPoint) {
 
         Stage window = new Stage();

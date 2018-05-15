@@ -6,10 +6,19 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * Class for displaying popup window at block adding
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class add_block {
 
     private static boolean close;
 
+    /**
+     * Displaying function
+     * @return Name of Block
+     */
     public static String display() {
 
         Stage window = new Stage();

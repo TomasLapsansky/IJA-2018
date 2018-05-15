@@ -8,10 +8,19 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * Class for displaying popup window at connection adding
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class add_connection {
 
     private static boolean close;
 
+    /**
+     * Displaying function
+     * @return Values from text-fields
+     */
     public static String[] display() {
 
         Stage window = new Stage();

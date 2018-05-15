@@ -15,8 +15,17 @@ import javafx.scene.shape.Rectangle;
 
 import static java.lang.Math.sqrt;
 
+/**
+ * Class for controlling canvas
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class canvas {
 
+    /**
+     * Adding block to canvas
+     * @param block Reference of Block
+     */
     public static void add_block(Block block) {
 
         block.canvas = new Group();
@@ -41,10 +50,12 @@ public class canvas {
 
         stackPane.getChildren().addAll(rectangle, label);
 
+        // Highlighting before choosing the location of new block
         main_gui.topMenu.setDisable(true);
         main_gui.leftMenu.setDisable(true);
         main_gui.canvas.setStyle("-fx-background-color: #eeffff;");
 
+        // Handler for choosing of location
         main_gui.canvas.setOnMouseClicked(e -> {
             block.canvas.setLayoutX(e.getX()-30);
             block.canvas.setLayoutY(e.getY()-30);
@@ -60,10 +71,17 @@ public class canvas {
             main_gui.canvas.setOnMouseClicked(null);
         });
 
+        // Handler for moving
         block.canvas.setOnMouseDragged(e -> handlers.blockDrag(block, e));
 
     }
 
+    /**
+     * Adding block to canvas from loaded file
+     * @param block Reference to block
+     * @param x X position
+     * @param y Y position
+     */
     public static void add_block(Block block, double x, double y) {
 
         block.canvas = new Group();
@@ -95,10 +113,15 @@ public class canvas {
 
         main_gui.canvas.getChildren().add(block.canvas);
 
+        // Handler for moving
         block.canvas.setOnMouseDragged(e -> handlers.blockDrag(block, e));
 
     }
 
+    /**
+     * Adding point to canvas
+     * @param point Reference of Point
+     */
     public static void add_point(Point point) {
 
         point.canvas = new Group();
@@ -117,10 +140,12 @@ public class canvas {
 
         stackPane.getChildren().addAll(circle, label);
 
+        // Highlighting before choosing the location of new block
         main_gui.topMenu.setDisable(true);
         main_gui.leftMenu.setDisable(true);
         main_gui.canvas.setStyle("-fx-background-color: #eeffff;");
 
+        // Handler for choosing of location
         main_gui.canvas.setOnMouseClicked(e -> {
             point.canvas.setLayoutX(e.getX()-40);
             point.canvas.setLayoutY(e.getY()-40);
@@ -136,18 +161,27 @@ public class canvas {
             main_gui.canvas.setOnMouseClicked(null);
         });
 
+        // Popup story
         Tooltip.install(point.canvas, new Tooltip(String.valueOf(point.getValue())));
 
+        // Handler for double-click to edit on canvas
         point.canvas.setOnMouseClicked(e -> {
             if(e.getClickCount() == 2) {
                 handlers.edit_point(false, point);
             }
         });
 
+        // Handler for moving
         point.canvas.setOnMouseDragged(e -> handlers.pointDrag(point, e));
 
     }
 
+    /**
+     * Adding point to canvas from loaded file
+     * @param point Reference of Point
+     * @param x X position
+     * @param y Y position
+     */
     public static void add_point(Point point, double x, double y) {
 
         point.canvas = new Group();
@@ -173,18 +207,25 @@ public class canvas {
 
         main_gui.canvas.getChildren().add(point.canvas);
 
+        // Popup story
         Tooltip.install(point.canvas, new Tooltip(String.valueOf(point.getValue())));
 
+        // Handler for double-click to edit on canvas
         point.canvas.setOnMouseClicked(e -> {
             if(e.getClickCount() == 2) {
                 handlers.edit_point(false, point);
             }
         });
 
+        // Handler for moving
         point.canvas.setOnMouseDragged(e -> handlers.pointDrag(point, e));
 
     }
 
+    /**
+     * Adding connection between two objects on canvas
+     * @param connection Reference of Connection
+     */
     public static void add_connection(Connection connection) {
 
         connection.canvas = new Group();
@@ -198,6 +239,7 @@ public class canvas {
         double X2;
         double Y2;
 
+        // Calculation of image position
         if((connection.getIn_port().getBlock().canvas == null) && (connection.getOut_port().getBlock().canvas == null)){
             X1 = Point.Points.get(connection.getOut_port().getBlock().getName()).canvas.getLayoutX()+40;
             Y1 = Point.Points.get(connection.getOut_port().getBlock().getName()).canvas.getLayoutY()+40;
@@ -220,13 +262,12 @@ public class canvas {
             Y2 = connection.getIn_port().getBlock().canvas.getLayoutY()+30;
         }
 
+        // Setting gradient to recognize direction of connection
         RadialGradient lg1 = new RadialGradient(0, .1, X1, Y1, (sqrt((X2-X1)*(X2-X1)+(Y2-Y1)*(Y2-Y1))), false, CycleMethod.NO_CYCLE, new Stop(0, Color.GREEN), new Stop(1, Color.RED));
 
         line = new Line(X1, Y1, X2, Y2);
         line.setStrokeWidth(3);
         line.setStroke(lg1);
-
-        //Label label = new Label(connection.getName());
 
         stackPane.getChildren().add(line);
 
@@ -246,8 +287,10 @@ public class canvas {
 
         connection.canvas.getChildren().add(stackPane);
 
+        // Popup story
         Tooltip.install(line, new Tooltip(connection.getName() + " " + connection.getIn_port().getValue()));
 
+        // Handler for double-click to edit on canvas
         line.setOnMouseClicked(e -> {
             if(e.getClickCount() == 2) {
                 handlers.edit_connection(false, connection);
@@ -259,18 +302,30 @@ public class canvas {
 
     }
 
+    /**
+     * Removing block from canvas
+     * @param block Reference of Block
+     */
     public static void remove_block(Block block) {
 
         main_gui.canvas.getChildren().remove(block.canvas);
 
     }
 
+    /**
+     * Removing point from canvas
+     * @param point Reference of Point
+     */
     public static void remove_point(Point point) {
 
         main_gui.canvas.getChildren().remove(point.canvas);
 
     }
 
+    /**
+     * Removing connection from canvas
+     * @param connection Reference of Connection
+     */
     public static void remove_connection(Connection connection) {
 
         main_gui.canvas.getChildren().remove(connection.canvas);

@@ -4,6 +4,11 @@ import javafx.scene.Group;
 
 import java.util.Map;
 
+/**
+ * Connections between ports
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class Connection {
 
     private String name;
@@ -16,6 +21,12 @@ public class Connection {
 
     public static Map<String, Connection> Connections;
 
+    /**
+     * Constructor
+     * @param name Name of connection
+     * @param output Reference to output port
+     * @param input Reference to input port
+     */
     public Connection(String name, OUT_Port output, IN_Port input) {
 
         this.out_port = output;
@@ -31,30 +42,57 @@ public class Connection {
 
     }
 
+    /**
+     * Setter
+     * @param output Reference to output port
+     */
     public void setOut_port(OUT_Port output) {
         this.out_port = output;
     }
 
+    /**
+     * Getter
+     * @return Reference to output port
+     */
     public OUT_Port getOut_port() {
         return out_port;
     }
 
+    /**
+     * Setter
+     * @param input Reference to input port
+     */
     public void setIn_port(IN_Port input) {
         this.in_port = input;
     }
 
+    /**
+     * Getter
+     * @return Reference to input port
+     */
     public IN_Port getIn_port() {
         return in_port;
     }
 
+    /**
+     * Getter
+     * @return Name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter
+     * @param name Name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets equality between output and input port of connection
+     */
     public void setEquation() {
 
         in_port.setValue(out_port.getValue());
@@ -72,7 +110,6 @@ public class Connection {
                     to_result = false;
                     break;
                 }
-
             }
 
             if (to_result)

@@ -14,40 +14,62 @@ import java.util.UUID;
 import ija.Block.*;
 import ija.Port.*;
 import ija.Run;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Handlers for Graphic user Interface
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class handlers {
 
-    public static void file_new() {
+    /**
+     * Creates new project
+     */
+    static void file_new() {
 
         IO.New();
 
     }
 
-    public static void file_open() {
+    /**
+     * Opens existing project
+     */
+    static void file_open() {
 
         IO.load();
 
     }
 
-    public static void file_save() {
+    /**
+     * Saves project
+     */
+    static void file_save() {
 
         IO.save();
 
     }
 
-    public static void file_settings() {
+    /**
+     * Future implementation of settings
+     * @ TODO: 15/05/2018 Implements
+     */
+    static void file_settings() {
 
     }
 
-    public static void file_exit() {
+    /**
+     * Exiting of program
+     */
+    static void file_exit() {
         System.exit(0);
     }
 
+    /**
+     * Select and edit selected point
+     * @param selector Bool determinate if we have to call selector
+     * @param point Reference to Point / null if selector = true
+     */
     public static void edit_point(boolean selector, Point point) {
 
         if(selector)
@@ -66,6 +88,11 @@ public class handlers {
         point.setValue(Double.parseDouble(ret));
     }
 
+    /**
+     * Select and edit selected connection
+     * @param selector Bool determinate if we have to call selector
+     * @param connection Reference to Connection / null if selector = true
+     */
     public static void edit_connection(boolean selector, Connection connection) {
 
         // Connection values name are random
@@ -107,7 +134,10 @@ public class handlers {
         connection.setIn_port(input);
     }
 
-    public static void add_point() {
+    /**
+     * Selects type of Point (Start/End) and creates its instance + add it to schema
+     */
+    static void add_point() {
 
         String type = selectors.setPoint();
 
@@ -133,27 +163,35 @@ public class handlers {
         if(nameCheck(name))
             return;
 
-        if(type.equals("Start")) {
+        switch (type) {
+            case "Start": {
 
-            Start_Point point = new Start_Point(name, value);
+                Start_Point point = new Start_Point(name, value);
 
-            canvas.add_point(point);
+                canvas.add_point(point);
 
-        } else if(type.equals("End")) {
+                break;
+            }
+            case "End": {
 
-            End_Point point = new End_Point(name, value);
+                End_Point point = new End_Point(name, value);
 
-            canvas.add_point(point);
+                canvas.add_point(point);
 
-        } else {
-            return;
+                break;
+            }
+            default:
+                return;
         }
 
-        TreeItem item = main_gui.makeBranch(ret[0], main_gui.leftMenu_items.get("Points"));
+        main_gui.makeBranch(name, main_gui.leftMenu_items.get("Points"));
 
     }
 
-    public static void add_add() {
+    /**
+     * Calls display function and creates instance of ADD block
+     */
+    static void add_add() {
         String name = add_block.display();
         if (name == null || name.isEmpty()) {
             return;
@@ -169,7 +207,10 @@ public class handlers {
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
 
-    public static void add_sub() {
+    /**
+     * Calls display function and creates instance of SUB block
+     */
+    static void add_sub() {
         String name = add_block.display();
         if (name == null || name.isEmpty()) {
             return;
@@ -185,7 +226,10 @@ public class handlers {
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
 
-    public static void add_mul() {
+    /**
+     * Calls display function and creates instance of MUL block
+     */
+    static void add_mul() {
         String name = add_block.display();
         if (name == null || name.isEmpty()) {
             return;
@@ -201,7 +245,10 @@ public class handlers {
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
 
-    public static void add_div() {
+    /**
+     * Calls display function and creates instance of DIV block
+     */
+    static void add_div() {
         String name = add_block.display();
         if (name == null || name.isEmpty()) {
             return;
@@ -217,7 +264,10 @@ public class handlers {
         main_gui.makeBranch(name, main_gui.leftMenu_items.get("Blocks"));
     }
 
-    public static void add_connection() {
+    /**
+     * Calls display function and creates instance of connection
+     */
+    static void add_connection() {
 
         // Connection values name are random
 
@@ -248,7 +298,10 @@ public class handlers {
 
     }
 
-    public static void delete_point() {
+    /**
+     * Delete point and connections connected to it
+     */
+    static void delete_point() {
 
         Point select = selectors.point(true);
         if(select == null) {
@@ -284,7 +337,10 @@ public class handlers {
 
     }
 
-    public static void delete_block() {
+    /**
+     * Delete block and connections connected to it
+     */
+    static void delete_block() {
 
         Block select = selectors.block();
         if(select == null) {
@@ -321,7 +377,10 @@ public class handlers {
 
     }
 
-    public static void delete_connection() {
+    /**
+     * Delete connections and connected ports
+     */
+    static void delete_connection() {
 
         Connection select = selectors.connection();
 
@@ -350,12 +409,18 @@ public class handlers {
 
     }
 
-    public static void run_cycleDetection() {
+    /**
+     * Runs Detection of Cycles with warning message
+     */
+    static void run_cycleDetection() {
 
         Run.cycle_detection(true);
     }
 
-    public static void run_run() {
+    /**
+     * Runs run algorithm
+     */
+    static void run_run() {
 
         Run.run();
 
@@ -363,6 +428,11 @@ public class handlers {
 
     }
 
+    /**
+     * Checks uniqueness of names of created objects
+     * @param name Name of created object
+     * @return True / False = Non-unique / Unique
+     */
     private static boolean nameCheck(String name) {
 
         for (String key: Block.Blocks.keySet()) {
@@ -382,6 +452,11 @@ public class handlers {
         return false;
     }
 
+    /**
+     * Handles movement of blocks at canvas
+     * @param block Reference of Block
+     * @param event Type of Event(MouseDrag)
+     */
     public static void blockDrag(Block block, MouseEvent event) {
 
         double x,y;
@@ -421,6 +496,11 @@ public class handlers {
         }
     }
 
+    /**
+     * Handles movement of points at canvas
+     * @param point Reference of Point
+     * @param event Type of Event(MouseDrag)
+     */
     public static void pointDrag(Point point, MouseEvent event) {
 
         double x,y;
@@ -465,7 +545,10 @@ public class handlers {
         }
     }
 
-    public static void debug() {
+    /**
+     * Internal function for debugging of references
+     */
+    static void debug() {
 
         System.out.println("GATE");
 

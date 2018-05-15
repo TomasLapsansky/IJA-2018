@@ -9,10 +9,19 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class for displaying popup window at point adding
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class add_point {
 
     private static boolean close;
 
+    /**
+     * Displaying function
+     * @return Values from text-fields
+     */
     public static String[] display() {
 
         Stage window = new Stage();

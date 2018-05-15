@@ -5,6 +5,11 @@ import javafx.scene.control.Tooltip;
 
 import java.util.Map;
 
+/**
+ * Abstract Point class for inputs and output of program
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public abstract class Point {
 
     public static Map<String, Point> Points;
@@ -16,6 +21,11 @@ public abstract class Point {
 
     public Group canvas;
 
+    /**
+     * Constructor
+     * @param name Name of Point
+     * @param value Value of Point
+     */
     public Point(String name, double value) {
 
         this.name = name;
@@ -26,18 +36,34 @@ public abstract class Point {
         this.gate_block.gate = true;
     }
 
+    /**
+     * Getter
+     * @return Name of Point
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter
+     * @param name New name of Point
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Getter
+     * @return Value of Point
+     */
     public double getValue() {
         return value;
     }
 
+    /**
+     * Setter
+     * @param value Value of Point
+     */
     public void setValue(double value) {
         this.value = value;
 

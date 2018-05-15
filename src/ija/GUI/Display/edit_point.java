@@ -10,10 +10,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class for displaying popup window at point editing
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class edit_point {
 
     private static boolean close;
 
+    /**
+     * Displaying function
+     * @param point Reference of Point
+     * @return Value from text-field
+     */
     public static String display(Point point) {
 
         Stage window = new Stage();

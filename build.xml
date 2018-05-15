@@ -8,6 +8,7 @@
     <property name="main.src.dir" value="./src"/>
     <property name="test.build.dir" value="./build/test"/>
     <property name="test.src.dir" value="./test"/>
+    <property name="doc.dir" value="./doc"/>
     
     <path id="classpath.test">
         <pathelement location="lib/junit-4.12.jar"/>
@@ -28,6 +29,11 @@
                 <attribute name="Main-Class" value="ija.GUI.main_class"/>
             </manifest>
         </jar>
+        <javadoc packagenames="doc" sourcepath="src/ija" destdir="${doc.dir}">
+            <fileset dir="src/ija">
+                <include name="**" />
+            </fileset>
+        </javadoc>
     </target>
     
     <target name="run">

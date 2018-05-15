@@ -9,10 +9,20 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * Class for displaying popup window at connection editing
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class edit_connection {
 
     private static boolean close;
 
+    /**
+     * Displaying function
+     * @param connection Reference of connection
+     * @return Values from text-fields
+     */
     public static String[] display(Connection connection) {
 
         Stage window = new Stage();

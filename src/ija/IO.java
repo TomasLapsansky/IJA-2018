@@ -13,8 +13,16 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.UUID;
 
+/**
+ * Handles saving and loading of created schemas
+ * @author Tomas Lapsansky
+ * @author Filip Plesko
+ */
 public class IO {
 
+    /**
+     * Saves raw project structure to file chosen by FileChooser
+     */
     public static void save() {
 
         Stage stage = new Stage();
@@ -110,6 +118,9 @@ public class IO {
 
     }
 
+    /**
+     * Loads raw project structure from file chosen by FileChooser and creates it
+     */
     public static void load() {
 
         Stage stage = new Stage();
@@ -177,11 +188,11 @@ public class IO {
 
                         line = br.readLine();
 
-                        String name = "";
-                        double x = 0.0;
-                        double y = 0.0;
+                        String name;
+                        double x;
+                        double y;
 
-                        Block block = null;
+                        Block block;
 
                         if (line.compareTo("ADD") == 0) {
 
@@ -207,7 +218,7 @@ public class IO {
 
                             block = new MUL_Block(name);
 
-                        } else if (line.compareTo("DIV") == 0) {
+                        } else { //if (line.compareTo("DIV") == 0) {
 
                             name = br.readLine();
                             x = Double.parseDouble(br.readLine());
@@ -257,6 +268,9 @@ public class IO {
 
     }
 
+    /**
+     * Clears program from created or loaded schema
+     */
     public static void New() {
 
         TreeItem<String> par = main_gui.leftMenu_items.get("Connections");
