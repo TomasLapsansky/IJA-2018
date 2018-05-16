@@ -1,6 +1,7 @@
 package ija.Block;
 
 import ija.Port.Port;
+import ija.Run;
 
 /**
  * Div block
@@ -27,7 +28,14 @@ public class DIV_Block extends Block {
 
         for (int i = 1; i < PortIN.size(); i++) {
 
-            result /= PortIN.get(i).getValue();
+            double part = PortIN.get(i).getValue();
+
+            if(part == 0) {
+                Run.message("Warning", "Zero dividing");
+                return;
+            }
+
+            result /= part;
 
         }
 
