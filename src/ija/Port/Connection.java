@@ -2,6 +2,7 @@ package ija.Port;
 
 import javafx.scene.Group;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -18,6 +19,8 @@ public class Connection {
 
     public boolean gate;
     public Group canvas;
+
+    public static ArrayList<Connection> sequence;
 
     public static Map<String, Connection> Connections;
 
@@ -39,6 +42,8 @@ public class Connection {
         input.setConnection(this);
 
         Connections.put(name, this);
+
+        sequence.add(this);
 
     }
 

@@ -9,6 +9,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class main_gui extends Application {
         Block.Blocks = new HashMap<>();
         Connection.Connections = new HashMap<>();
         Point.Points = new HashMap<>();
+        Connection.sequence = new ArrayList<>();
 
         init_main_gui();
 

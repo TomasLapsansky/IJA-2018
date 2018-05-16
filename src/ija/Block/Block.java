@@ -104,6 +104,7 @@ abstract public class Block {
             System.out.println(connection.getName());
 
             main_gui.canvas.getChildren().remove(connection.canvas);
+            Connection.sequence.remove(connection);
 
             main_gui.removeBranch(connection.getName(), "Connections");
         }
@@ -151,6 +152,7 @@ abstract public class Block {
             Connection.Connections.remove(connection.getName());
 
             main_gui.canvas.getChildren().remove(connection.canvas);
+            Connection.sequence.remove(connection);
 
             main_gui.removeBranch(connection.getName(), "Connections");
         }

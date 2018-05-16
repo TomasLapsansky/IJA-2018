@@ -132,6 +132,10 @@ public class handlers {
         // Setting new ports
         connection.setOut_port(output);
         connection.setIn_port(input);
+
+        // Reseting sequence of connections
+        Connection.sequence.remove(connection);
+        Connection.sequence.add(connection);
     }
 
     /**
@@ -402,6 +406,7 @@ public class handlers {
 
         // Vymazat zo zoznamu
         Connection.Connections.remove(name);
+        Connection.sequence.remove(select);
 
         // GUI
         main_gui.removeBranch(name, "Connections");
@@ -424,7 +429,9 @@ public class handlers {
 
         Run.run();
 
-        Run.message("Final", "Value is " + Point.result.getValue());
+        if(Point.result != null) {
+            Run.message("Final", "Value is " + Point.result.getValue());
+        }
 
     }
 

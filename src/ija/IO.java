@@ -89,9 +89,9 @@ public class IO {
 
                 // Connections
 
-                for (String key: Connection.Connections.keySet()) {
+                for (Connection connection: Connection.sequence) {
 
-                    Connection connection = Connection.Connections.get(key);
+                    //Connection connection = Connection.Connections.get(key);
 
                     if(!connection.gate) {
 
@@ -288,6 +288,7 @@ public class IO {
         Block.Blocks.clear();
         Point.Points.clear();
         Connection.Connections.clear();
+        Connection.sequence.clear();
 
         Point.result = null;
 
